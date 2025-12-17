@@ -3,6 +3,7 @@ using Application.DTOs;
 using Application.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 using UserManagement_System.Models;
 
 namespace UserManagement_System.Controllers
@@ -23,10 +24,10 @@ namespace UserManagement_System.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<Result<List<User>>>> GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
             var users = await _service.GetAllAsync();
-            return users;
+            return Ok(Result<List<UserDto>>.DataResult(users));
         }
 
         /// <summary>
@@ -35,10 +36,10 @@ namespace UserManagement_System.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<Result<User?>>> GetUserById([FromQuery] int id)
+        public async Task<IActionResult> GetUserById([FromQuery] int id)
         {
             var u = await _service.GetByIdAsync(id);
-            return u;
+            return Ok(u);
         }
 
         /// <summary>
@@ -47,10 +48,11 @@ namespace UserManagement_System.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Result>> AddUser([FromBody] userInput user)
+        public async Task<IActionResult> AddUser([FromBody] CreateUserDto user)
         {
             var r = await _service.AddAsync(user);
-            return r;
+            return Ok(r==0?Result<int>.DataResult(r):Result<int>.Fail("添加用户失败!")); 
+            //暂时不知道怎么失败，只能先这样写着，业务失败用异常处理
         }
 
 
@@ -60,10 +62,10 @@ namespace UserManagement_System.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Result>> UpdataUser([FromBody] userInput user)
+        public async Task<IActionResult> UpdataUser([FromBody] userInput user)
         {
             var r = await _service.UpdateAsync(user);
-            return r;
+            return Ok(r?Result.Ok():Result.Fail("更新失败"));
         }
 
         /// <summary>
@@ -72,10 +74,10 @@ namespace UserManagement_System.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<ActionResult<Result>> DeleteUser([FromQuery] int id)
+        public async Task<IActionResult> DeleteUser([FromQuery] int id)
         {
             var r = await _service.DeleteAsync(id);
-            return r;
+            return Ok(r ? Result.Ok() : Result.Fail("更新失败"));
         }
 
     }

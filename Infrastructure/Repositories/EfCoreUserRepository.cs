@@ -28,10 +28,11 @@ namespace Infrastructure.Repositories
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task AddAsync(User user)
+        public async Task<int> AddAsync(User user)
         {
             await _context.Users.AddAsync(user);//添加用户实体到上下文
             await _context.SaveChangesAsync();//保存更改到数据库
+            return user.Id;
         }
 
         /// <summary>

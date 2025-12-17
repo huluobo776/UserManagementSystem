@@ -6,14 +6,14 @@ namespace Application.Interfaces
 {
     public interface IUserService
     {
-        Task<Result<User?>> GetByIdAsync(int id);
+        Task<UserDto?> GetByIdAsync(int id);
 
-        Task<Result> AddAsync(userInput userInput);
+        Task<int> AddAsync(CreateUserDto userInput);
 
-        Task<Result> UpdateAsync(userInput user);
+        Task<bool> UpdateAsync(userInput user);
 
-        Task<Result> DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
 
-        Task<Result<List<User>>> GetAllAsync();
+        Task<List<UserDto>> GetAllAsync();
     }
 }

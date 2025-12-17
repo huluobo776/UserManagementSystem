@@ -9,7 +9,7 @@ namespace Domain.Interfaces
         //其二接口是一个领域模型的契约，
         //它是一个“领域对象集合”的抽象，不需要具体的名称例如 GetUserById
         Task<User?> GetByIdAsync(int id);
-        Task AddAsync(User user);
+        Task<int> AddAsync(User user);
 
         Task<bool> UpdateAsync(User user);
         Task<bool> DeleteAsync(int id);

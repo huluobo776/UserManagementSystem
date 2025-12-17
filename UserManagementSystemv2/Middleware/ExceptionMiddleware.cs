@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Application.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Text.Json;
 using System.Xml;
@@ -18,11 +19,24 @@ namespace UserManagement_System.Middleware
             this._logger = logger;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context) 
         {
             try
             {
                 await _next(context);
+            }
+            catch (BusinessException ex) //捕获业务异常
+            {
+                context.Response.StatusCode = (int)StatusCodes.Status400BadRequest;
+                context.Response.ContentType = "application/json";
+
+                var response = new
+                {
+                    success = false,
+                    code = ex.ErrorCode,
+                    message = ex.Message
+                };
+                await context.Response.WriteAsync(JsonSerializer.Serialize(response)); //将响应对象序列化为JSON字符串并写入响应体
             }
             catch (DbUpdateException DBError)
             {

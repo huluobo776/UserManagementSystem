@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class InmeMoryUserRepository : IUserRepository
+    public class InmeMoryUserRepository //: IUserRepository  这里的接口先注释掉，避免报错 后续需要修改方法
     {
         private readonly List<User> _store = new List<User>();
 
