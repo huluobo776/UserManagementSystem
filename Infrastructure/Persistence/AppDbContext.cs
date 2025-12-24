@@ -7,7 +7,7 @@ namespace Infrastructure.Persistence
     public class AppDbContext : DbContext
     {
         public DbSet<User> Users => Set<User>(); //用户实体集合
-
+        public DbSet<Product> Products => Set<Product>(); 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
@@ -42,6 +42,24 @@ namespace Infrastructure.Persistence
                 entity.HasIndex(e => e.Email) //设置Email为唯一索引
                     .IsUnique();
             });
+
+
+            //配置Product实体
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.ToTable("Products");
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();//自增Id
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(100).HasComment("产品名称");
+                entity.Property(e => e.Sku).IsRequired().HasMaxLength(50).HasComment("库存单位");
+                entity.Property(e => e.Price).IsRequired().HasMaxLength(10).HasComment("价格");
+                entity.Property(e => e.Stock).IsRequired().HasMaxLength(20).HasComment("库存数量");
+
+                entity.HasIndex(e => e.Sku) //设置Email为唯一索引
+                .IsUnique();
+            });
+
+
+
         }
 
     }

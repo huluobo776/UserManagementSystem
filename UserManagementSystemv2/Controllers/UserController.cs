@@ -1,5 +1,5 @@
 ﻿using Application.Common;
-using Application.DTOs;
+using Application.DTOs.Users;
 using Application.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -62,7 +62,7 @@ namespace UserManagement_System.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> UpdataUser([FromBody] userInput user)
+        public async Task<IActionResult> UpdataUser([FromBody] UpdateUserDto user)
         {
             var r = await _service.UpdateAsync(user);
             return Ok(r?Result.Ok():Result.Fail("更新失败"));

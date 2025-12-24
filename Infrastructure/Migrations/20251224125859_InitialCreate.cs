@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Infrastructure.Persistence.Migrations
+namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -11,24 +11,25 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false, comment: "用户姓名"),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false, comment: "邮箱地址"),
-                    Password = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false, comment: "密码（加密存储）")
+                    Sku = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false, comment: "库存单位"),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false, comment: "产品名称"),
+                    Price = table.Column<decimal>(type: "TEXT", maxLength: 10, nullable: false, comment: "价格"),
+                    Stock = table.Column<int>(type: "INTEGER", maxLength: 20, nullable: false, comment: "库存数量")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
-                table: "Users",
-                column: "Email",
+                name: "IX_Products_Sku",
+                table: "Products",
+                column: "Sku",
                 unique: true);
         }
 
@@ -36,7 +37,7 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Products");
         }
     }
 }

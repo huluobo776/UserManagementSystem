@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Persistence.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251213142925_InitialCreate")]
+    [Migration("20251224125859_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -18,6 +18,42 @@ namespace Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.18");
+
+            modelBuilder.Entity("Domain.Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .HasComment("产品名称");
+
+                    b.Property<decimal>("Price")
+                        .HasMaxLength(10)
+                        .HasColumnType("TEXT")
+                        .HasComment("价格");
+
+                    b.Property<string>("Sku")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT")
+                        .HasComment("库存单位");
+
+                    b.Property<int>("Stock")
+                        .HasMaxLength(20)
+                        .HasColumnType("INTEGER")
+                        .HasComment("库存数量");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Sku")
+                        .IsUnique();
+
+                    b.ToTable("Products", (string)null);
+                });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {

@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOs
+namespace Application.Queries.GetProduct
 {
-    internal class UpdateUserDto
-    {
-    }
+    public record GetProductQuery(int Id);
 }

@@ -1,4 +1,6 @@
-﻿using Domain.Interfaces;
+﻿using Application.Interfaces;
+using Application.Service;
+using Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
@@ -19,6 +21,7 @@ namespace Application
             // services.AddTransient<IUserService, UserService>();
             //services.AddSingleton<Interfaces.IUserService,Service.UserService>(); //单例，每次请求都使用同一个实例
             services.AddScoped<Interfaces.IUserService,Service.UserService>(); //
+            services.AddScoped<IProductService, ProductService>();
             return services;
         }
     }

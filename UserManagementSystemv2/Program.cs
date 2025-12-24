@@ -15,6 +15,13 @@ using Application.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Application.Mapping;
+using Application.Handlers;
+using Application.Queries.GetUser;
+using Application.Comands.CreateUserCommand;
+using Application.Comands.UpdateUser;
+using Application.Comands.CreateProductCommand;
+using Application.Comands.UpdateProduct;
+using Application.Queries.GetProduct;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,18 +49,36 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // =======================
-// Application / Infrastructure
+// Application / Infrastructure 批量注册
 // =======================
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
 
+//Handlers
+builder.Services.AddTransient<ICreateUserHandler, CreateUserHandler>();
+builder.Services.AddTransient<IGetUserHandler,GetUserHandler>();
+builder.Services.AddTransient<IUpdateUserHandler, UpdateUserHandler>();
+
+
+builder.Services.AddTransient<ICreateProductHandler, CreateProductHandler>();
+builder.Services.AddTransient<IUpdateProductHandler, UpdateProductHandler>();
+builder.Services.AddTransient<IGetProductHandler, GetProductHandler>();
 // =======================
 // DbContext
 // =======================
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//{
+//    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//    options.UseSqlite(connectionString);
+//});
+var dbPath = Path.Combine(
+    builder.Environment.ContentRootPath,
+    "UserManagementSystem.db"
+);
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    options.UseSqlite(connectionString);
+    options.UseSqlite($"Data Source={dbPath}");
 });
 
 // =======================
@@ -65,6 +90,7 @@ builder.Logging.AddDebug();
 builder.Logging.AddConfiguration(
     builder.Configuration.GetSection("Logging")
 );
+Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 var app = builder.Build();
 

@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace Application.Queries.GetUser
 {
-    internal class GetUserQuery
-    {
-    }
+    public record GetUserQuery(int Id);
 }

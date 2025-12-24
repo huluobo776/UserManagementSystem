@@ -21,7 +21,8 @@ namespace Infrastructure.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<User?> GetByIdAsync(int id) => await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+        public async Task<User> GetByIdAsync(int id)
+            => await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
 
         /// <summary>
         /// 添加用户
@@ -40,7 +41,7 @@ namespace Infrastructure.Repositories
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateAsync(User user)
+        public async Task<bool> UpdataAsync(User user)
         {
             var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
             if (u == null) return false;
@@ -73,5 +74,7 @@ namespace Infrastructure.Repositories
             var userLsit = await _context.Users.AsNoTracking().ToListAsync();
             return userLsit;
         }
+
+        public async Task<User?> GetByEmailAsync(string email) => await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
     }
 }

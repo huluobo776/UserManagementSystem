@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Domain.Interfaces;
+using Infrastructure.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Infrastructure
@@ -11,6 +13,7 @@ namespace Infrastructure
             // services.AddTransient<IUserRepository, InmeMoryUserRepository>();
             //services.AddSingleton<Domain.Interfaces.IUserRepository, Repositories.InmeMoryUserRepository>();//接口与实现类的映射   //单例 ，每次请求都使用同一个实例
             services.AddScoped<Domain.Interfaces.IUserRepository, Repositories.EfCoreUserRepository>();//接口与实现类的映射   //作用于每个请求的生命周期，每个请求使用同一个实例，不同请求使用不同实例
+            services.AddScoped<IProductRepository, EfCoreProductRepository>();
             return services;
         }
     }

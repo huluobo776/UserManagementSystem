@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Application.DTOs.Users;
+using Application.Queries.GetUser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace Application.Handlers
 {
-    internal class IGetUserHandler
+    public interface IGetUserHandler
     {
+        Task<UserDto> HandleAsync(GetUserQuery query);
     }
 }

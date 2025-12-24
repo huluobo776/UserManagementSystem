@@ -1,4 +1,4 @@
-﻿using Application.Comands.CreateUserCommand;
+﻿using Application.Comands.UpdateUser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Application.Handlers
 {
-    public interface  ICreateUserHandler
+    public  interface IUpdateUserHandler
     {
-        Task<int> HandleAsync(CreateUserCommand command);
+        Task<bool> HandleAsync(UpdateUserCommand command); 
     }
 }

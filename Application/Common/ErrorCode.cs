@@ -18,6 +18,12 @@ namespace Application.Common
 
         UserAlreadyExists = 10002,
 
+        //Product模块
+        ProductNotFound = 20001,
+
+        ProductAlreadyExists = 20002,
+
+
         //Auth模块
         Unauthorized = 20001,
         Forbidden = 20002,

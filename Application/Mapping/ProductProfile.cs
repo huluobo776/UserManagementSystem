@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
 using Domain.Entities;
-using Application.DTOs.Users;
 using Application.DTOs.Products;
 
 namespace Application.Mapping
 {
-    public class UserProfile :Profile
+    public class ProductProfile : Profile
     {
-        public UserProfile()
+        public ProductProfile()
         {
-            CreateMap<User, UserDto>();//
-            CreateMap<CreateProductDto,Product>();
+            CreateMap<Product,ProductDto>();
+            CreateMap<CreateProductDto, Product>();
             CreateMap<UpdateProductDto, Product>();
         }
+        
     }
 }

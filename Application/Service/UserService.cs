@@ -1,11 +1,15 @@
 ﻿using Application.Common;
-using Application.DTOs;
 using Application.Exceptions;
 using Application.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
 using Application.Mapping;
 using AutoMapper;
+using Application.Handlers;
+using Application.Queries.GetUser;
+using Application.Comands.CreateUserCommand;
+using Application.Comands.UpdateUser;
+using Application.DTOs.Users;
 
 namespace Application.Service
 {
@@ -13,50 +17,53 @@ namespace Application.Service
     {
         public readonly IUserRepository _repo;
         public readonly IMapper _mapper;
-        public UserService(IUserRepository repo,IMapper mapper)
+        public readonly ICreateUserHandler _createUserHandler;
+        public readonly IGetUserHandler _getUserHandler;
+        private readonly  IUpdateUserHandler _updateUserHandler;
+        public UserService(IUserRepository repo,IMapper mapper, IGetUserHandler getUserHandler,ICreateUserHandler createUserHandler,IUpdateUserHandler updateUserHandler)
         {
             _repo = repo;
             _mapper = mapper;
+            _getUserHandler = getUserHandler;
+            _createUserHandler = createUserHandler;
+            _updateUserHandler = updateUserHandler;
         }
 
-
-        public async Task<UserDto?> GetByIdAsync(int id)
-        {
-            var u = await _repo.GetByIdAsync(id);
-            if (u == null)
-            {
-                throw new BusinessException(ErrorCode.UserNotFound);//抛出业务异常
-            }
-
-            return _mapper.Map<UserDto>(u);
-        }
+        /*   appliction层负责
+         *   用例(User Case)
+         *   业务规则
+         *   错误语义(BusinessException)
+         *   Dto <-> Entity
+         *   调用Repository
+         * 
+         */
+        
 
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<UserDto?> GetByIdAsync(int id) 
+            => await _getUserHandler.HandleAsync(new GetUserQuery(id));
+
+
+        
         //添加用户
         public async Task<int> AddAsync(CreateUserDto userInput)
-        {
-            //以后这里会放业务规则
-            var user = new User(userInput.Name, userInput.Email, userInput.Password);
-            var userid = await _repo.AddAsync(user);
-            return userid;
-        }
+            =>await  _createUserHandler.HandleAsync(new CreateUserCommand(userInput));
+ 
 
         //更新用户
-        public async Task<bool> UpdateAsync(userInput userInput)
-        {
-            //这里后续补充业务规则
-            var user = new User(userInput.Name, userInput.Email, userInput.Password);
-            await _repo.UpdateAsync(user);
-            return true;
-        }
+        public async Task<bool> UpdateAsync(UpdateUserDto userInput)
+            => await _updateUserHandler.HandleAsync(new UpdateUserCommand(userInput));
 
         //删除用户
         public async Task<bool> DeleteAsync(int id)
-        {
-            await _repo.DeleteAsync(id);
-            return true;
-        }
+           => await _repo.DeleteAsync(id);
+
 
         //获取所有用户
         public async Task<List<UserDto>> GetAllAsync()
